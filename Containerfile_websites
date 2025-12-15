@@ -1,0 +1,18 @@
+# Base image with shared requirements
+FROM fedora:latest AS base
+
+RUN dnf -y upgrade && \
+    dnf -y install httpd && \
+    dnf clean all
+
+EXPOSE 80
+
+CMD ["httpd", "-D", "FOREGROUND"]
+
+# Website 1 image
+FROM base AS website-1
+COPY website1.html /var/www/html/website1.html
+
+# Website 2 image
+FROM base AS website-2
+COPY website2.html /var/www/html/website2.html
